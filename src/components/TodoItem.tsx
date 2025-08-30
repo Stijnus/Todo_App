@@ -21,12 +21,16 @@ const priorityColors = {
 };
 
 export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
-  const formattedDate = new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  }).format(todo.createdAt);
+  // ✅ Ensure we always have a valid Date
+  const date = new Date(todo.createdAt);
+  const formattedDate = !isNaN(date.getTime())
+    ? new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(date)
+    : 'Invalid date';
 
   return (
     <div

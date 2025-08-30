@@ -4,7 +4,19 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      if (item) {
+        const parsed = JSON.parse(item);
+
+        // SPECIAL CASE: If this looks like a list of todos, convert date strings
+        if (Array.isArray(parsed)) {
+          return parsed.map(todo =>
+            todo.createdAt ? { ...todo, createdAt: new Date(todo.createdAt) } : todo
+          ) as T;
+        }
+
+        return parsed;
+      }
+      return initialValue;
     } catch (error) {
       console.error(`Error reading localStorage key "${key}":`, error);
       return initialValue;
