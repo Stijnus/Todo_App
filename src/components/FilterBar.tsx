@@ -12,29 +12,31 @@ export function FilterBar({ filter, onFilterChange, searchTerm, onSearchChange }
   return (
     <div className="flex flex-col sm:flex-row gap-4 mb-6">
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
         <input
           type="text"
           placeholder="Search tasks..."
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
           className="
-            w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl
-            focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100
-            transition-all duration-200 placeholder-gray-400
+            w-full pl-10 pr-4 py-3 border-2 border-gray-200 dark:border-dark-600 rounded-xl
+            focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/20
+            transition-all duration-200 placeholder-gray-400 dark:placeholder-gray-500
+            bg-white dark:bg-dark-700 text-gray-800 dark:text-gray-100
           "
         />
       </div>
       
       <div className="relative">
-        <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
         <select
           value={filter}
           onChange={(e) => onFilterChange(e.target.value)}
           className="
-            pl-10 pr-8 py-3 border-2 border-gray-200 rounded-xl
-            focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100
-            transition-all duration-200 appearance-none bg-white
+            pl-10 pr-8 py-3 border-2 border-gray-200 dark:border-dark-600 rounded-xl
+            focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/20
+            transition-all duration-200 appearance-none
+            bg-white dark:bg-dark-700 text-gray-800 dark:text-gray-100
           "
         >
           <option value="all">All Tasks</option>
