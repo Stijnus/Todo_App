@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light theme variables */
+  --color-background: 255 255 255;
+  --color-foreground: 23 23 23;
+  --color-primary: 158 127 255;
+  --color-secondary: 56 189 248;
+  --color-accent: 244 114 182;
+  --color-surface: 38 38 38;
+  --color-text: 255 255 255;
+  --color-text-secondary: 163 163 163;
+  --color-border: 47 47 47;
+  --color-success: 16 185 129;
+  --color-warning: 245 158 11;
+  --color-error: 239 68 68;
+  --color-card: 249 250 251;
+  --color-card-foreground: 17 24 39;
+  
+  /* Spacing and shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --radius: 0.5rem;
+}
+
+.dark {
+  /* Dark theme variables */
+  --color-background: 23 23 23;
+  --color-foreground: 255 255 255;
+  --color-primary: 158 127 255;
+  --color-secondary: 56 189 248;
+  --color-accent: 244 114 182;
+  --color-surface: 38 38 38;
+  --color-text: 255 255 255;
+  --color-text-secondary: 163 163 163;
+  --color-border: 47 47 47;
+  --color-success: 16 185 129;
+  --color-warning: 245 158 11;
+  --color-error: 239 68 68;
+  --color-card: 38 38 38;
+  --color-card-foreground: 249 250 251;
+}
+
+/* Base styles with CSS custom properties */
+* {
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  line-height: 1.6;
+}
+
+/* Accessibility focus styles */
+*:focus-visible {
+  outline: 2px solid rgb(var(--color-primary));
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-primary: 124 58 237;
+    --color-secondary: 14 165 233;
+    --color-accent: 219 39 119;
+  }
+  
+  .dark {
+    --color-primary: 167 139 250;
+    --color-secondary: 56 189 248;
+    --color-accent: 251 113 133;
+  }
+}
+
+/* Component-specific theme variables */
+.component-card {
+  background-color: rgb(var(--color-card));
+  color: rgb(var(--color-card-foreground));
+  border: 1px solid rgb(var(--color-border) / 0.2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.component-card:hover {
+  box-shadow: var(--shadow-md);
+}

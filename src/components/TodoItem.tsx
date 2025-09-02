@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, Trash2, Star, Clock, Calendar } from 'lucide-react';
+import { Check, Trash2, Clock, Flag } from 'lucide-react';
 import { Todo } from '../types/todo';
 
 interface TodoItemProps {
@@ -8,90 +8,81 @@ interface TodoItemProps {
   onDelete: (id: string) => void;
 }
 
-const priorityIcons = {
-  low: <Clock className="w-4 h-4 text-blue-400" />,
-  medium: <Star className="w-4 h-4 text-yellow-400" />,
-  high: <Star className="w-4 h-4 text-red-400 fill-red-400" />
-};
-
-const priorityColors = {
-  low: 'border-blue-200 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-700',
-  medium: 'border-yellow-200 dark:border-yellow-800 hover:border-yellow-300 dark:hover:border-yellow-700',
-  high: 'border-red-200 dark:border-red-800 hover:border-red-300 dark:hover:border-red-700'
-};
-
 export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
-  // ✅ Ensure we always have a valid Date
-  const date = new Date(todo.createdAt);
-  const formattedDate = !isNaN(date.getTime())
-    ? new Intl.DateTimeFormat('en-US', {
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      }).format(date)
-    : 'Invalid date';
+  const priorityColors = {
+    low: 'text-green-500',
+    medium: 'text-yellow-500',
+    high: 'text-red-500'
+  };
+
+  const priorityIcons = {
+    low: <Flag className="w-3 h-3" />,
+    medium: <Flag className="w-3 h-3" />,
+    high: <Flag className="w-3 h-3" />
+  };
 
   return (
-    <div
-      className={`
-        group flex items-center justify-between p-4 
-        bg-white dark:bg-dark-800 rounded-xl border-2 transition-all duration-200
-        hover:shadow-lg hover:scale-[1.02] ${priorityColors[todo.priority]}
-        ${todo.completed ? 'opacity-60' : ''}
-      `}
-    >
-      <div className="flex items-center space-x-3 flex-1 min-w-0">
-        <button
-          onClick={() => onToggle(todo.id)}
-          className={`
-            flex-shrink-0 w-6 h-6 rounded-full border-2 transition-all duration-200
-            flex items-center justify-center
-            ${todo.completed
-              ? 'bg-gradient-to-r from-green-400 to-blue-500 border-transparent'
-              : 'border-gray-300 dark:border-dark-600 hover:border-gray-400 dark:hover:border-dark-500'
-            }
-          `}
-        >
-          {todo.completed && <Check className="w-4 h-4 text-white" />}
-        </button>
-        
-        <div className="flex-1 min-w-0">
-          <p
+    <div className={`
+      group p-4 rounded-xl border-2 transition-all duration-300 animate-fade-in
+      bg-card text-card-foreground border-border/50
+      hover:shadow-lg hover:border-primary/30
+      ${todo.completed ? 'opacity-60' : 'opacity-100'}
+    `}>
+      <div className="flex items-start justify-between">
+        <div className="flex items-start space-x-3 flex-1 min-w-0">
+          <button
+            onClick={() => onToggle(todo.id)}
             className={`
-              text-lg font-medium transition-all duration-200
-              ${todo.completed 
-                ? 'text-gray-500 dark:text-gray-500 line-through' 
-                : 'text-gray-800 dark:text-gray-100'
+              mt-1 p-2 rounded-lg border-2 transition-all duration-200
+              flex-shrink-0
+              ${todo.completed
+                ? 'bg-success border-success text-white'
+                : 'bg-transparent border-border hover:border-primary'
               }
-              truncate
+              focus:outline-none focus:ring-2 focus:ring-primary/50
             `}
+            aria-label={todo.completed ? 'Mark as incomplete' : 'Mark as complete'}
           >
-            {todo.text}
-          </p>
-          <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
-            <Calendar className="w-3 h-3" />
-            <span>{formattedDate}</span>
-            {todo.category && (
-              <span className="px-2 py-1 bg-gray-100 dark:bg-dark-700 rounded-full text-xs">
-                {todo.category}
-              </span>
-            )}
+            <Check className={`w-4 h-4 transition-all ${todo.completed ? 'scale-100' : 'scale-0'}`} />
+          </button>
+
+          <div className="flex-1 min-w-0">
+            <p className={`
+              text-lg font-medium break-words transition-colors
+              ${todo.completed ? 'line-through text-text-secondary' : 'text-card-foreground'}
+            `}>
+              {todo.text}
+            </p>
+            
+            <div className="flex items-center space-x-4 mt-2 text-sm text-text-secondary">
+              <div className="flex items-center space-x-1">
+                <Clock className="w-3 h-3" />
+                <span>{todo.createdAt.toLocaleDateString()}</span>
+              </div>
+              
+              {todo.category && (
+                <span className="px-2 py-1 rounded-full bg-primary/10 text-primary text-xs">
+                  {todo.category}
+                </span>
+              )}
+              
+              <div className={`flex items-center space-x-1 ${priorityColors[todo.priority]}`}>
+                {priorityIcons[todo.priority]}
+                <span className="capitalize">{todo.priority}</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex items-center space-x-2 ml-4">
-        <div className="opacity-70 group-hover:opacity-100 transition-opacity">
-          {priorityIcons[todo.priority]}
-        </div>
-        
         <button
           onClick={() => onDelete(todo.id)}
-          className="
-            p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20
-            rounded-lg transition-all duration-200 transform hover:scale-110
-          "
+          className={`
+            p-2 rounded-lg transition-all duration-200 ml-3
+            text-error hover:bg-error/10 hover:text-error
+            opacity-0 group-hover:opacity-100 focus:opacity-100
+            focus:outline-none focus:ring-2 focus:ring-error/50
+          `}
+          aria-label="Delete task"
         >
           <Trash2 className="w-4 h-4" />
         </button>
